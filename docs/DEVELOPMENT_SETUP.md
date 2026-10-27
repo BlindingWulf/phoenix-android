@@ -2,9 +2,7 @@
 
 Everything here runs on Windows or Linux without an Android device or adb. Commands run from `android-stage10a/` unless stated.
 
-> **Verification status:**
-> - The test commands were run on the maintainer's checkout of this exact source (private commit `00ecc65`): 342 app unit tests plus `:core:acceptance` passed.
-> - A fresh-clone run of these instructions on a clean machine has **not** been done yet. If a step fails, open an issue with the full output.
+> **Verification status:** GitHub Actions ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)) runs these steps from a fresh checkout on `ubuntu-latest` and `windows-latest` (Temurin 25), on every push and pull request. On 2026-10-27 it was green: six core acceptance harnesses plus all 342 app unit tests. CI does not package an APK.
 
 ## 1. Toolchain
 

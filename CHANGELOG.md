@@ -22,7 +22,9 @@ First public source release. Corresponds to private commit `00ecc65` plus the ve
 ### Known limitations
 See [`docs/MYTHOS_START_HERE.md`](docs/MYTHOS_START_HERE.md#known-limitations-do-not-file-as-new) and the review findings in [`docs/review/FINDINGS_BETA1.md`](docs/review/FINDINGS_BETA1.md).
 
+### Verified
+- Fresh-checkout CI on Linux and Windows: core acceptance harnesses plus 342 app unit tests.
+
 ### Not verified for this snapshot
 - A release-configuration (`rcCheck`) phone smoke test of this exact source.
-- A fresh-clone desktop build.
 - A signed APK; none is published.

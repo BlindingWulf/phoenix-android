@@ -17,7 +17,7 @@ gh release download v0.5.0-beta.1 -R BlindingWulf/phoenix-android -p 'netbird-an
 grep '\.aar$' tools/netbird/SHA256SUMS | sha256sum -c -
 ./gradlew :core:acceptance :core:networkingAcceptance :core:worldAcceptance :app:testDebugUnitTest --console=plain
 ```
-Expected: the core harnesses print PASS lines, and `:app:testDebugUnitTest` reports 342 tests with 0 failures. If yours differs before you change anything, report it: a fresh-clone run has not yet been verified.
+Expected: the core harnesses print PASS lines, and `:app:testDebugUnitTest` reports 342 tests with 0 failures. CI verifies the same steps on Linux and Windows for every pull request, so keep it green.
 
 ## 3. Work loop
 1. Pick an item from the P1 list.

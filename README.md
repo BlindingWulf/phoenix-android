@@ -1,5 +1,7 @@
 # Phoenix: Minecraft server hosting on Android (beta)
 
+[![CI](https://github.com/BlindingWulf/phoenix-android/actions/workflows/ci.yml/badge.svg)](https://github.com/BlindingWulf/phoenix-android/actions/workflows/ci.yml)
+
 Phoenix hosts a Minecraft Java Edition 26.2 server on an ARM64 Android phone, with Bedrock crossplay. It is the companion app to the **Phoenium** Fabric optimisation mod.
 
 **Status: `0.5.0-beta.1`, a source pre-release for review.**
