@@ -48,9 +48,9 @@ class NameFrontDoorTest {
     }
 
     @Test fun transferMatches262Layout() {
-        val packet = frame(FrontDoorProtocol.transfer("java-name.gl.at.ply.gg", 40095))
+        val packet = frame(FrontDoorProtocol.transfer("example-tunnel-a.tun.ply.gg", 40095))
         assertEquals(0x0B, FrontDoorProtocol.packetId(packet))
-        assertEquals(Endpoint("java-name.gl.at.ply.gg", 40095), FrontDoorProtocol.parseTransfer(packet))
+        assertEquals(Endpoint("example-tunnel-a.tun.ply.gg", 40095), FrontDoorProtocol.parseTransfer(packet))
         // Port is a VarInt: 40095 takes three bytes.
         assertEquals(1 + 1 + 27 + 3, packet.size)
     }
@@ -77,7 +77,7 @@ class NameFrontDoorTest {
 
     @Test fun serverListPingsReachTheServerUnderAnyName() {
         door.serverPort = fakeStatusServer()
-        door.transferTo = Endpoint("java-name.gl.at.ply.gg", 40095)
+        door.transferTo = Endpoint("example-tunnel-a.tun.ply.gg", 40095)
         door.start(0)
         val status = MinecraftStatusProbe.query("127.0.0.1", door.localPort, "example-server.minecraft.co.com", 3000)
         assertTrue(status.contains("Phoenix Baseline") && status.contains("\"online\":1"))
@@ -85,9 +85,9 @@ class NameFrontDoorTest {
 
     @Test fun joinsAreHandedToPlayitWithoutReachingTheServer() {
         door.serverPort = 1 // nothing listens: a join must never be passed on
-        door.transferTo = Endpoint("java-name.gl.at.ply.gg", 40095)
+        door.transferTo = Endpoint("example-tunnel-a.tun.ply.gg", 40095)
         door.start(0)
-        assertEquals(Endpoint("java-name.gl.at.ply.gg", 40095),
+        assertEquals(Endpoint("example-tunnel-a.tun.ply.gg", 40095),
             NameFrontDoor.checkTransfer("127.0.0.1", door.localPort, "example-server.minecraft.co.com", 3000))
         Thread.sleep(200)
         assertTrue("Phoenix's own check isn't reported as a player", synchronized(logged) { logged.isEmpty() })
