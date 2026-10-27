@@ -1,0 +1,12 @@
+Playit Android native build metadata
+Upstream: https://github.com/playit-cloud/playit-agent.git
+Revision: 633d650869a9cdb2c906efa9effc58aa8b7725a3
+Cargo.lock SHA-256: 785919E9E05A64A021270C63BACF5C8240052787DE978810962FF8D7C579D2E9
+Cargo: cargo 1.98.0 (797e8a9bc 2026-08-05)
+Rustc: rustc 1.98.0 (88d9e12ae 2026-08-18)
+NDK: 27.3.13750724 (r27d)
+Target: aarch64-linux-android, Android API 24
+Artifact: runtime/generated/jniLibs/arm64-v8a/libplayitagent.so
+Artifact SHA-256: 18520FB75197EEB08E162A8DD44D93AA1B29B0028CCD9EF9A44D53847C1A00A2
+Upstream LICENSE.txt SHA-256: DD940A7BFF7C184A05FD6BA5BA5A46EE61DCE2EC0E3F2A882650D3075A037F5F
+Artifact kind: executable AArch64 PIE, packaged with a .so suffix; launch as a process, never with System.loadLibrary.

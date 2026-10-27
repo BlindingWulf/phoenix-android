@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "minecraftVersion": "26.2",
+  "javaTcpPort": 25565,
+  "bedrockUdpPort": 19132,
+  "artifacts": [
+    {
+      "id": "geyser",
+      "version": "2.11.3-b1249",
+      "url": "https://download.geysermc.org/v2/projects/geyser/versions/2.11.3/builds/1249/downloads/fabric",
+      "fileName": "Geyser-Fabric.jar",
+      "expectedSha256": "f315e62744812c5b4587dbbf083396f4a99791f525d544d42e772b61179d9d2f",
+      "sizeBytes": 41159144,
+      "sha256": "f315e62744812c5b4587dbbf083396f4a99791f525d544d42e772b61179d9d2f",
+      "fabricMetadata": {
+        "schemaVersion": 1,
+        "id": "geyser-fabric",
+        "version": "2.11.3-SNAPSHOT",
+        "name": "Geyser-Fabric",
+        "description": "A bridge/proxy allowing you to connect to Minecraft: Java Edition servers with Minecraft: Bedrock Edition. ",
+        "authors": [
+          "GeyserMC"
+        ],
+        "contact": {
+          "website": "https://geysermc.org",
+          "repo": "https://github.com/GeyserMC/Geyser"
+        },
+        "license": "MIT",
+        "icon": "assets/geyser/icon.png",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "org.geysermc.geyser.platform.fabric.GeyserFabricBootstrap"
+          ]
+        },
+        "mixins": [
+          "geyser.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.19.3",
+          "fabric-api": "*",
+          "minecraft": "~26.2"
+        },
+        "jars": [
+          {
+            "file": "META-INF/jars/Java-WebSocket-1.5.1.jar"
+          },
+          {
+            "file": "META-INF/jars/MinecraftAuth-5.0.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-api-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-key-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-text-serializer-commons-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-text-serializer-gson-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-text-serializer-json-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-text-serializer-legacy-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/adventure-text-serializer-plain-5.2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/aircompressor-0.27.jar"
+          },
+          {
+            "file": "META-INF/jars/annotations-24.0.0.jar"
+          },
+          {
+            "file": "META-INF/jars/api-2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/base-api-1.0.3.jar"
+          },
+          {
+            "file": "META-INF/jars/bcpkix-jdk18on-1.85.jar"
+          },
+          {
+            "file": "META-INF/jars/bcprov-jdk18on-1.85.2.jar"
+          },
+          {
+            "file": "META-INF/jars/bcutil-jdk18on-1.85.jar"
+          },
+          {
+            "file": "META-INF/jars/bstats-base-3.1.0.jar"
+          },
+          {
+            "file": "META-INF/jars/cloud-fabric-2.0.0-beta.17.jar"
+          },
+          {
+            "file": "META-INF/jars/cumulus-1.1.2.jar"
+          },
+          {
+            "file": "META-INF/jars/error_prone_annotations-2.41.0.jar"
+          },
+          {
+            "file": "META-INF/jars/events-1.1-SNAPSHOT.jar"
+          },
+          {
+            "file": "META-INF/jars/expiringmap-0.5.10.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-permissions-api-0.7.0.jar"
+          },
+          {
+            "file": "META-INF/jars/gson-1.9.0.jar"
+          },
+          {
+            "file": "META-INF/jars/httpclient-1.9.0.jar"
+          },
+          {
+            "file": "META-INF/jars/immutable-2.0.jar"
+          },
+          {
+            "file": "META-INF/jars/j2objc-annotations-1.3.jar"
+          },
+          {
+            "file": "META-INF/jars/jose4j-0.9.6.jar"
+          },
+          {
+            "file": "META-INF/jars/jspecify-1.0.0.jar"
+          },
+          {
+            "file": "META-INF/jars/jsr305-3.0.2.jar"
+          },
+          {
+            "file": "META-INF/jars/libdatachannel-java-0.24.5.0-SNAPSHOT.jar"
+          },
+          {
+            "file": "META-INF/jars/libdatachannel-java-arch-detect-0.24.5.0-SNAPSHOT.jar"
+          },
+          {
+            "file": "META-INF/jars/lmbda-2.0.0.jar"
+          },
+          {
+            "file": "META-INF/jars/natives-1.0.3.jar"
+          },
+          {
+            "file": "META-INF/jars/nbt-3.0.5.Final.jar"
+          },
+          {
+            "file": "META-INF/jars/netty-codec-compression-4.2.7.Final.jar"
+          },
+          {
+            "file": "META-INF/jars/netty-codec-haproxy-4.2.7.Final.jar"
+          },
+          {
+            "file": "META-INF/jars/netty-codec-http-4.2.7.Final.jar"
+          },
+          {
+            "file": "META-INF/jars/option-1.1.0.jar"
+          },
+          {
+            "file": "META-INF/jars/snakeyaml-2.2.jar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "floodgate",
+      "version": "2.2.6-b67",
+      "url": "https://cdn.modrinth.com/data/bWrNNfkb/versions/urOFTrVX/Floodgate-Fabric-2.2.6-b67.jar",
+      "fileName": "Floodgate-Fabric-2.2.6-b67.jar",
+      "expectedSha512": "d6ecacfbf1c31171317792783754c4f58414508a8fd1aa23b9e3da5da9fe450a6e6e882e39e862cb5f1df38d2d97be8465a39857fe4b78c1cf89934230a71205",
+      "sizeBytes": 2606860,
+      "sha256": "9f736ba3ee86b8f8613868feafa35f9a3218c3c45ef4b7e4992c34ea1b044dc4",
+      "fabricMetadata": {
+        "schemaVersion": 1,
+        "id": "floodgate",
+        "version": "2.2.6-SNAPSHOT",
+        "name": "Floodgate",
+        "description": "",
+        "authors": [
+          "GeyserMC"
+        ],
+        "contact": {
+          "website": "https://geysermc.org",
+          "repo": "https://github.com/GeyserMC/Floodgate-Modded"
+        },
+        "license": "MIT",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "org.geysermc.floodgate.platform.fabric.FabricFloodgateMod"
+          ]
+        },
+        "accessWidener": "floodgate.classtweaker",
+        "mixins": [
+          "floodgate.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.19.3",
+          "fabric-api": "*",
+          "minecraft": "~26.2"
+        },
+        "jars": [
+          {
+            "file": "META-INF/jars/Java-WebSocket-1.6.0.jar"
+          },
+          {
+            "file": "META-INF/jars/aopalliance-1.0.jar"
+          },
+          {
+            "file": "META-INF/jars/cloud-fabric-2.0.0-20260617.163100-62.jar"
+          },
+          {
+            "file": "META-INF/jars/common-2.2.1-SNAPSHOT-unshaded.jar"
+          },
+          {
+            "file": "META-INF/jars/cumulus-1.1.2.jar"
+          },
+          {
+            "file": "META-INF/jars/events-1.1-SNAPSHOT.jar"
+          },
+          {
+            "file": "META-INF/jars/failureaccess-1.0.1.jar"
+          },
+          {
+            "file": "META-INF/jars/jakarta.inject-api-2.0.1.jar"
+          },
+          {
+            "file": "META-INF/jars/javax.inject-1.jar"
+          },
+          {
+            "file": "META-INF/jars/lmbda-2.0.0.jar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fabric-api",
+      "version": "0.161.0+26.2",
+      "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ewUK83HI/fabric-api-0.161.0%2B26.2.jar",
+      "fileName": "fabric-api-0.161.0+26.2.jar",
+      "expectedSha512": "2502fa5ade78e9a120b3747bc1a9a2167d6671743bea45bf115d3174c94121aeda87c549446d1a604a9c11fb828de17a551e3514ce42f3e93069dd14bdaee55b",
+      "sizeBytes": 2566123,
+      "sha256": "e5b858ceb13290c274e31cb888ff5a1a40cb91067e7ffab0b5b775aec51e216a",
+      "fabricMetadata": {
+        "schemaVersion": 1,
+        "id": "fabric-api",
+        "name": "Fabric API",
+        "version": "0.161.0+26.2",
+        "environment": "*",
+        "license": "Apache-2.0",
+        "icon": "assets/fabric/icon.png",
+        "contact": {
+          "homepage": "https://fabricmc.net",
+          "irc": "irc://irc.esper.net:6667/fabric",
+          "issues": "https://github.com/FabricMC/fabric/issues",
+          "sources": "https://github.com/FabricMC/fabric"
+        },
+        "authors": [
+          "FabricMC"
+        ],
+        "depends": {
+          "fabricloader": ">=0.18.4",
+          "java": ">=25",
+          "minecraft": "~26.2-"
+        },
+        "description": "Core API module providing key hooks and intercompatibility features.",
+        "jars": [
+          {
+            "file": "META-INF/jars/fabric-advancement-api-v1-1.0.0+58719a3b9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-api-base-2.0.4+ece063239e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-api-lookup-api-v1-2.0.18+11e1c9a39e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-biome-api-v1-18.0.6+c7bd5b8e9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-block-api-v1-3.1.0+53515aab9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-block-getter-api-v2-2.0.7+ec56b6019e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-command-api-v2-3.1.0+00cb03469e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-content-registries-v0-11.3.2+37b1aa249e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-convention-tags-v2-4.7.1+1f023a9e9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-crash-report-info-v1-1.0.5+086d547a9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-creative-tab-api-v1-5.0.15+6468574f9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-data-attachment-api-v1-2.2.19+515ac5339e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-data-generation-api-v1-25.6.0+c0da0b829e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-debug-api-v1-1.0.2+c792624d9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-dimensions-v1-5.1.12+515ac5339e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-entity-events-v1-5.0.5+06488ac19e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-events-interaction-v0-5.2.8+515ac5339e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-game-rule-api-v1-4.0.8+46a6d00c9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-item-api-v1-14.5.0+c68f6cbe9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-key-mapping-api-v1-2.0.5+e2bdee789e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-lifecycle-events-v1-4.1.4+29b6eb019e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-loot-api-v3-3.0.17+06488ac19e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-menu-api-v1-2.0.17+086d547a9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-message-api-v1-7.0.8+bb2ed3f79e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-model-loading-api-v1-8.0.17+c80601bb9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-networking-api-v1-6.3.4+2989c6a09e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-object-builder-api-v1-24.1.1+6fcd5f039e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-particles-v1-5.0.19+d1756aa99e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-permission-api-v1-1.0.5+e442d8d09e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-recipe-api-v1-9.0.22+11e1c9a39e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-registry-sync-v0-7.1.1+c7bd5b8e9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-renderer-api-v1-14.1.4+2b0d8a229e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-renderer-indigo-9.1.4+2b0d8a229e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-rendering-fluids-v1-6.0.4+06488ac19e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-rendering-v1-25.3.3+515ac5339e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-resource-conditions-api-v1-6.1.0+10e9a28b9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-resource-loader-v0-3.3.20+4fc5413f9e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-resource-loader-v1-2.0.13+9edec1269e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-screen-api-v1-5.2.1+5087f8249e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-serialization-api-v1-2.0.4+11a26f319e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-sound-api-v1-2.0.5+11a26f319e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-tag-api-v1-2.1.4+515ac5339e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-transfer-api-v1-8.0.13+11dbb7d79e.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-transitive-access-wideners-v1-8.1.4+67c847259e.jar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "simple-voice-chat",
+      "version": "fabric-2.6.24+26.2",
+      "url": "https://cdn.modrinth.com/data/9eGKb6K1/versions/Ls232EsW/voicechat-fabric-2.6.24%2B26.2.jar",
+      "fileName": "voicechat-fabric-2.6.24+26.2.jar",
+      "expectedSha512": "592c66fafdf00d9b9b23f23da8dbfd8bb996c2f639b8d55c2028a9fd55d79a7df67f1d23e1ef11a52919baa6b946a65190f805f884f0d50492db10d8bcd83db0",
+      "sizeBytes": 5594023,
+      "sha256": "6721500f14a655d7ad139a5297f24ffb4ae7b0f81d63232721cd4638042cd87e",
+      "fabricMetadata": {
+        "schemaVersion": 1,
+        "id": "voicechat",
+        "version": "2.6.24+26.2",
+        "name": "Simple Voice Chat",
+        "description": "A working voice chat in Minecraft!",
+        "authors": [
+          "Max Henkel"
+        ],
+        "contact": {
+          "homepage": "https://modrepo.de/minecraft/voicechat/overview",
+          "issues": "https://github.com/henkelmax/simple-voice-chat/issues",
+          "sources": "https://github.com/henkelmax/simple-voice-chat",
+          "discord": "https://discord.gg/4dH2zwTmyX"
+        },
+        "license": "All Rights Reserved",
+        "icon": "icon.png",
+        "environment": "*",
+        "entrypoints": {
+          "client": [
+            "de.maxhenkel.voicechat.FabricVoicechatClientMod"
+          ],
+          "main": [
+            "de.maxhenkel.voicechat.FabricVoicechatMod"
+          ],
+          "modmenu": [
+            "de.maxhenkel.voicechat.integration.ModMenu"
+          ]
+        },
+        "mixins": [
+          "voicechat.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.19.3",
+          "minecraft": "26.2.x",
+          "java": ">=25"
+        },
+        "suggests": {
+          "modmenu": ">=20.0.0-beta.3",
+          "cloth-config2": ">=26.2.155",
+          "fabric-permissions-api-v0": "*",
+          "viaversion": ">=5.8.0"
+        },
+        "breaks": {
+          "fabric-api": "<0.152.1+26.2",
+          "flashback": "<=0.43.3"
+        },
+        "custom": {
+          "modmenu": {
+            "links": {
+              "modmenu.discord": "https://discord.gg/4dH2zwTmyX"
+            }
+          },
+          "multiconnect": {
+            "custom_payloads": {
+              "allowed_clientbound": "voicechat:*",
+              "allowed_serverbound": "voicechat:*",
+              "clientbound_112_names": {
+                "voicechat:update_state": "vc:update_state",
+                "voicechat:request_secret": "vc:request_secret",
+                "voicechat:create_group": "vc:create_group",
+                "voicechat:set_group": "vc:set_group",
+                "voicechat:leave_group": "vc:leave_group"
+              },
+              "serverbound_112_names": {
+                "voicechat:secret": "vc:secret",
+                "voicechat:state": "vc:state",
+                "voicechat:states": "vc:states",
+                "voicechat:remove_state": "vc:remove_state",
+                "voicechat:add_group": "vc:add_group",
+                "voicechat:remove_group": "vc:remove_group",
+                "voicechat:joined_group": "vc:joined_group",
+                "voicechat:add_category": "vc:add_category",
+                "voicechat:remove_category": "vc:remove_category"
+              }
+            }
+          }
+        },
+        "jars": [
+          {
+            "file": "META-INF/jars/fabric-api-base-2.0.4+ece063239c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-command-api-v2-3.1.0+00cb03469c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-key-mapping-api-v1-2.0.5+e2bdee789c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-lifecycle-events-v1-4.1.3+4575b05f9c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-networking-api-v1-6.3.3+72073ef09c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-permission-api-v1-1.0.2+7c33558a9c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-rendering-v1-25.1.6+46a6d00c9c.jar"
+          },
+          {
+            "file": "META-INF/jars/fabric-resource-loader-v1-2.0.13+9edec1269c.jar"
+          },
+          {
+            "file": "META-INF/jars/voicechat-api-2.6.24.jar"
+          }
+        ]
+      }
+    }
+  ],
+  "sourceDocs": [
+    "https://geysermc.org/wiki/geyser/setup/",
+    "https://geysermc.org/wiki/floodgate/setup/"
+  ],
+  "notes": [
+    "Server-side crossplay and voice mods only; generic Minecraft runtime; no Phoenium or optimization mods.",
+    "Simple Voice Chat (All Rights Reserved) is downloaded from Modrinth's CDN at install time and never bundled in the APK."
+  ]
+}

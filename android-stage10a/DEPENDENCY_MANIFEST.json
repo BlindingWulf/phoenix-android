@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "resolvedAtUtc": "2026-10-08T07:58:42+00:00",
+  "minecraftVersion": "26.2",
+  "minecraftDataVersion": 4903,
+  "fabricLoaderVersion": "0.19.5",
+  "fabricInstallerVersion": "1.1.2",
+  "fabricServerMainClass": "net.fabricmc.loader.impl.launch.knot.KnotServer",
+  "sources": {
+    "minecraftVersionManifest": {
+      "url": "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+      "releaseMetadataUrl": "https://piston-meta.mojang.com/v1/packages/d367f3dfbc0b3e14688df2311359deb609b234e3/26.2.json",
+      "releaseMetadataSha1": "d367f3dfbc0b3e14688df2311359deb609b234e3",
+      "releaseTime": "2026-06-16T12:03:33+00:00"
+    },
+    "fabricLoaderMetadata": {
+      "url": "https://meta.fabricmc.net/v2/versions/loader/26.2",
+      "sha256": "06562c98e330a34b8df46674dc40fdfc22103c867edcb4c80d9fed5340c9f566"
+    },
+    "fabricInstallerMetadata": {
+      "url": "https://meta.fabricmc.net/v2/versions/installer",
+      "sha256": "55918208b3acb6ea205b662e57551a017fca51606ed2f3fcd71b71cd0f3d77a2"
+    },
+    "fabricServerMetadata": {
+      "url": "https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/server/json",
+      "sha256": "40ccb94c05cf39774cde642e2778a9562a9f349abcebaa996c8c3c55fc83c275"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "minecraft-server",
+      "fileName": "server.jar",
+      "url": "https://piston-data.mojang.com/v1/objects/823e2250d24b3ddac457a60c92a6a941943fcd6a/server.jar",
+      "sizeBytes": 60894273,
+      "sha1": "823e2250d24b3ddac457a60c92a6a941943fcd6a",
+      "sha256": "cdacdfb25898de5e4b4b0e5ddcc2722f77067e46605709c2d886c000ebb63ec5",
+      "expectedSha1FromMojang": "823e2250d24b3ddac457a60c92a6a941943fcd6a",
+      "integrityBasis": "Mojang metadata supplies the expected size and SHA-1; resolver also pins the downloaded SHA-256",
+      "license": "Minecraft EULA; downloaded from Mojang-hosted metadata"
+    },
+    {
+      "id": "fabric-server-launcher",
+      "fileName": "fabric-server-launch.jar",
+      "url": "https://meta.fabricmc.net/v2/versions/loader/26.2/0.19.5/1.1.2/server/jar",
+      "sizeBytes": 181838,
+      "sha1": "5af6e278fede12fb2b4321a2b399d79ce54c988e",
+      "sha256": "f1d2bafd0b3b97630b0cdd8e890cd102db3dbe60877a38a5c813aa929e691127",
+      "integrityBasis": "SHA-256 and size computed from the official Fabric Meta HTTPS response; endpoint did not publish a checksum",
+      "embeddedMinecraftVersion": "26.2",
+      "embeddedFabricLoaderVersion": "0.19.5",
+      "license": "Fabric Installer Apache-2.0; included components retain their licenses"
+    }
+  ],
+  "defaults": {
+    "eulaAccepted": false,
+    "optimizationMods": [],
+    "createDefaultWorld": false
+  },
+  "notes": [
+    "The checked-in artifact hashes pin installation; this resolver is only for deliberate lock refreshes.",
+    "Fabric's server launcher performs its own first-run setup for the exact embedded Minecraft and loader versions."
+  ]
+}

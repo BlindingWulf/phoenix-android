@@ -1,0 +1,59 @@
+title: "Phoenix Minecraft proxy (Always Free)"
+description: "A free proxy VM near your players for the Minecraft server on your phone. Paste the pairing code from Phoenix; Phoenix sets up the rest."
+schemaVersion: 1.1.0
+version: "1.0.0"
+locale: "en"
+
+variableGroups:
+  - title: "Phoenix"
+    variables:
+      - pairing_code
+      - vm_shape
+  - title: "Placement (optional)"
+    variables:
+      - compartment_ocid
+      - availability_domain
+  - title: "Set by Oracle"
+    visible: false
+    variables:
+      - tenancy_ocid
+      - region
+
+variables:
+  pairing_code:
+    type: password
+    title: "Phoenix pairing code"
+    description: "Phoenix copied it when you tapped Deploy. Paste it here. It starts with phx1: and works once."
+    required: true
+    pattern: "^phx1:[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?:[0-9]{1,5}:[0-9]{1,5}:[0-9]{1,5}:[0-9]{1,5}:[A-Z2-7]{26}$"
+  vm_shape:
+    type: enum
+    title: "Free VM type"
+    description: "AMD (1 GB) is usually available. If Oracle says it is out of capacity, choose Ampere (ARM)."
+    enum:
+      - "VM.Standard.E2.1.Micro"
+      - "VM.Standard.A1.Flex"
+    default: "VM.Standard.E2.1.Micro"
+    required: true
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Compartment"
+    description: "Where to create the proxy. Your root compartment is fine."
+    required: false
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    title: "Availability domain"
+    description: "Leave empty unless Oracle reports no capacity in the default one."
+    required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+outputs:
+  proxy_ip:
+    type: copyableString
+    title: "Proxy address"
+  next_step:
+    type: string
+    title: "Next step"
+
+primaryOutputButton: proxy_ip

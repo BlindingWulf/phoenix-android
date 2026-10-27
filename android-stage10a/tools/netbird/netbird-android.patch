@@ -1,0 +1,283 @@
+diff --git a/client/android/client.go b/client/android/client.go
+index e47a1c1..2ec471d 100644
+--- a/client/android/client.go
++++ b/client/android/client.go
+@@ -109,6 +109,8 @@ type Client struct {
+ 	// listener that has been removed or replaced. See stopStateChangeWatchLocked.
+ 	stateChangeDone chan struct{}
+ 
++	oauthSessionListener OAuthSessionListener
++
+ 	// Latched "the server wants an interactive login": survives the engine
+ 	// restarts that replace the run loop's context state. See Client.Status.
+ 	// Guarded by loginRequiredMu together with loginCleared, which counts
+@@ -203,6 +205,7 @@ func (c *Client) Run(platformFiles PlatformFiles, urlOpener URLOpener, isAndroid
+ 	c.ctxCancelLock.Unlock()
+ 
+ 	auth := NewAuthWithConfig(ctx, cfg, cfgFile)
++	auth.SetOAuthSessionListener(c.oauthSessionListener)
+ 	err = auth.login(urlOpener, isAndroidTV)
+ 	if err != nil {
+ 		return err
+@@ -570,6 +573,12 @@ func (c *Client) SetConnectionListener(listener ConnectionListener) {
+ 	c.recorder.SetConnectionListener(connectionListenerAdapter{listener})
+ }
+ 
++// SetOAuthSessionListener registers the listener receiving credentials from
++// the official SSO flow used when this client enrolls or reauthenticates.
++func (c *Client) SetOAuthSessionListener(listener OAuthSessionListener) {
++	c.oauthSessionListener = listener
++}
++
+ // RemoveConnectionListener remove connection listener
+ func (c *Client) RemoveConnectionListener() {
+ 	c.recorder.RemoveConnectionListener()
+diff --git a/client/android/login.go b/client/android/login.go
+index 155c6ea..076393b 100644
+--- a/client/android/login.go
++++ b/client/android/login.go
+@@ -25,6 +25,14 @@ type ErrListener interface {
+ 	OnError(error)
+ }
+ 
++// OAuthSessionListener receives the OAuth credentials returned by the official
++// NetBird SSO flow. Implementations must store credentials securely and never
++// write them to logs.
++type OAuthSessionListener interface {
++	OnOAuthSession(accessToken string, refreshToken string, selectedToken string, expiresIn int64, tokenEndpoint string, clientID string, useIDToken bool)
++	OnOAuthSessionError(error)
++}
++
+ // URLOpener it is a callback interface. The Open function will be triggered if
+ // the backend want to show an url for the user
+ type URLOpener interface {
+@@ -34,9 +42,45 @@ type URLOpener interface {
+ 
+ // Auth can register or login new client
+ type Auth struct {
+-	ctx     context.Context
+-	config  *profilemanager.Config
+-	cfgPath string
++	ctx                  context.Context
++	config               *profilemanager.Config
++	cfgPath              string
++	oauthSessionListener OAuthSessionListener
++}
++
++// SetOAuthSessionListener registers an optional listener for the OAuth session
++// produced by a successful interactive peer login.
++func (a *Auth) SetOAuthSessionListener(listener OAuthSessionListener) {
++	a.oauthSessionListener = listener
++}
++
++// AcquireOAuthSession runs the management-configured SSO flow without
++// registering or re-registering the peer. It supports account API reauth for
++// an already-enrolled client.
++func (a *Auth) AcquireOAuthSession(listener OAuthSessionListener, urlOpener URLOpener, isAndroidTV bool) {
++	go func() {
++		if listener == nil {
++			return
++		}
++		authClient, err := auth.NewAuth(a.ctx, a.config.PrivateKey, a.config.ManagementURL, a.config)
++		if err != nil {
++			listener.OnOAuthSessionError(fmt.Errorf("failed to create auth client: %v", err))
++			return
++		}
++		defer authClient.Close()
++
++		flow, err := authClient.GetOAuthFlow(a.ctx, isAndroidTV, profileLoginHint(a.cfgPath))
++		if err != nil {
++			listener.OnOAuthSessionError(fmt.Errorf("failed to get OAuth flow: %v", err))
++			return
++		}
++		tokenInfo, err := runOAuthFlow(a.ctx, flow, urlOpener, nil)
++		if err != nil {
++			listener.OnOAuthSessionError(err)
++			return
++		}
++		deliverOAuthSession(listener, *tokenInfo, getOAuthTokenEndpoint(flow), flow.GetClientID(a.ctx))
++	}()
+ }
+ 
+ // NewAuth instantiate Auth struct and validate the management URL
+@@ -166,8 +210,12 @@ func (a *Auth) login(urlOpener URLOpener, isAndroidTV bool) error {
+ 
+ 	jwtToken := ""
+ 	email := ""
++	tokenEndpoint := ""
++	clientID := ""
++	var tokenInfo *auth.TokenInfo
+ 	if needsLogin {
+-		tokenInfo, err := a.foregroundGetTokenInfo(authClient, urlOpener, isAndroidTV)
++		var err error
++		tokenInfo, tokenEndpoint, clientID, err = a.foregroundGetTokenInfo(authClient, urlOpener, isAndroidTV)
+ 		if err != nil {
+ 			return fmt.Errorf("interactive sso login failed: %v", err)
+ 		}
+@@ -179,6 +227,9 @@ func (a *Auth) login(urlOpener URLOpener, isAndroidTV bool) error {
+ 	if err != nil {
+ 		return fmt.Errorf("login failed: %v", err)
+ 	}
++	if tokenInfo != nil && a.oauthSessionListener != nil {
++		deliverOAuthSession(a.oauthSessionListener, *tokenInfo, tokenEndpoint, clientID)
++	}
+ 
+ 	// Stored after Login, not before: a rejected token must not leave a hint
+ 	// pointing at an account that cannot be used.
+@@ -193,13 +244,37 @@ func (a *Auth) login(urlOpener URLOpener, isAndroidTV bool) error {
+ 	return nil
+ }
+ 
+-func (a *Auth) foregroundGetTokenInfo(authClient *auth.Auth, urlOpener URLOpener, isAndroidTV bool) (*auth.TokenInfo, error) {
++func (a *Auth) foregroundGetTokenInfo(authClient *auth.Auth, urlOpener URLOpener, isAndroidTV bool) (*auth.TokenInfo, string, string, error) {
+ 	oAuthFlow, err := authClient.GetOAuthFlow(a.ctx, isAndroidTV, profileLoginHint(a.cfgPath))
+ 	if err != nil {
+-		return nil, fmt.Errorf("failed to get OAuth flow: %v", err)
++		return nil, "", "", fmt.Errorf("failed to get OAuth flow: %v", err)
++	}
++
++	tokenInfo, err := runOAuthFlow(a.ctx, oAuthFlow, urlOpener, nil)
++	if err != nil {
++		return nil, "", "", err
++	}
++	return tokenInfo, getOAuthTokenEndpoint(oAuthFlow), oAuthFlow.GetClientID(a.ctx), nil
++}
++
++func getOAuthTokenEndpoint(flow auth.OAuthFlow) string {
++	provider, ok := flow.(interface{ GetTokenEndpoint() string })
++	if !ok {
++		return ""
+ 	}
++	return provider.GetTokenEndpoint()
++}
+ 
+-	return runOAuthFlow(a.ctx, oAuthFlow, urlOpener, nil)
++func deliverOAuthSession(listener OAuthSessionListener, tokenInfo auth.TokenInfo, tokenEndpoint string, clientID string) {
++	listener.OnOAuthSession(
++		tokenInfo.AccessToken,
++		tokenInfo.RefreshToken,
++		tokenInfo.GetTokenToUse(),
++		int64(tokenInfo.ExpiresIn),
++		tokenEndpoint,
++		clientID,
++		tokenInfo.UseIDToken,
++	)
+ }
+ 
+ // profileLoginHint returns the stored account email for the profile at cfgPath.
+diff --git a/client/android/session.go b/client/android/session.go
+index d5da09c..615c4de 100644
+--- a/client/android/session.go
++++ b/client/android/session.go
+@@ -297,7 +297,8 @@ func (c *Client) extendAuthSession(ctx context.Context, urlOpener URLOpener, isA
+ 	// renews the session of the account already signed in, so it must not stop to
+ 	// offer a choice.
+ 	a := NewAuthWithConfig(ctx, cfg, cfgPath)
+-	tokenInfo, err := a.foregroundGetTokenInfo(authClient, urlOpener, isAndroidTV)
++	a.SetOAuthSessionListener(c.oauthSessionListener)
++	tokenInfo, tokenEndpoint, clientID, err := a.foregroundGetTokenInfo(authClient, urlOpener, isAndroidTV)
+ 	if err != nil {
+ 		return fmt.Errorf("interactive sso login failed: %v", err)
+ 	}
+@@ -305,6 +306,9 @@ func (c *Client) extendAuthSession(ctx context.Context, urlOpener URLOpener, isA
+ 	if _, err := engine.ExtendAuthSession(ctx, tokenInfo.GetTokenToUse()); err != nil {
+ 		return err
+ 	}
++	if c.oauthSessionListener != nil {
++		deliverOAuthSession(c.oauthSessionListener, *tokenInfo, tokenEndpoint, clientID)
++	}
+ 	c.clearLoginRequired()
+ 
+ 	go urlOpener.OnLoginSuccess()
+diff --git a/client/internal/auth/device_flow.go b/client/internal/auth/device_flow.go
+index 3592e58..70c0590 100644
+--- a/client/internal/auth/device_flow.go
++++ b/client/internal/auth/device_flow.go
+@@ -132,6 +132,11 @@ func (d *DeviceAuthorizationFlow) GetClientID(ctx context.Context) string {
+ 	return d.providerConfig.ClientID
+ }
+ 
++// GetTokenEndpoint returns the token endpoint supplied by the management server.
++func (d *DeviceAuthorizationFlow) GetTokenEndpoint() string {
++	return d.providerConfig.TokenEndpoint
++}
++
+ // SetLoginHint sets the login hint for the device authorization flow
+ func (d *DeviceAuthorizationFlow) SetLoginHint(hint string) {
+ 	d.providerConfig.LoginHint = hint
+diff --git a/client/internal/auth/pkce_flow.go b/client/internal/auth/pkce_flow.go
+index be64cc6..b968cfd 100644
+--- a/client/internal/auth/pkce_flow.go
++++ b/client/internal/auth/pkce_flow.go
+@@ -132,6 +132,11 @@ func (p *PKCEAuthorizationFlow) GetClientID(_ context.Context) string {
+ 	return p.providerConfig.ClientID
+ }
+ 
++// GetTokenEndpoint returns the token endpoint supplied by the management server.
++func (p *PKCEAuthorizationFlow) GetTokenEndpoint() string {
++	return p.providerConfig.TokenEndpoint
++}
++
+ // RequestAuthInfo requests a authorization code login flow information.
+ func (p *PKCEAuthorizationFlow) RequestAuthInfo(ctx context.Context) (AuthFlowInfo, error) {
+ 	state, err := randomBytesInHex(24)
+@@ -289,11 +294,18 @@ func (p *PKCEAuthorizationFlow) handleRequest(req *http.Request) (*oauth2.Token,
+ }
+ 
+ func (p *PKCEAuthorizationFlow) parseOAuthToken(token *oauth2.Token) (TokenInfo, error) {
++	expiresIn := 0
++	if !token.Expiry.IsZero() {
++		expiresIn = int(time.Until(token.Expiry).Seconds())
++		if expiresIn < 0 {
++			expiresIn = 0
++		}
++	}
+ 	tokenInfo := TokenInfo{
+ 		AccessToken:  token.AccessToken,
+ 		RefreshToken: token.RefreshToken,
+ 		TokenType:    token.TokenType,
+-		ExpiresIn:    token.Expiry.Second(),
++		ExpiresIn:    expiresIn,
+ 		UseIDToken:   p.providerConfig.UseIDToken,
+ 	}
+ 	if idToken, ok := token.Extra("id_token").(string); ok {
+diff --git a/client/internal/auth/pkce_flow_test.go b/client/internal/auth/pkce_flow_test.go
+index c487c13..c71b5d3 100644
+--- a/client/internal/auth/pkce_flow_test.go
++++ b/client/internal/auth/pkce_flow_test.go
+@@ -2,16 +2,35 @@ package auth
+ 
+ import (
+ 	"context"
++	"encoding/base64"
+ 	"fmt"
+ 	"net"
+ 	"testing"
++	"time"
+ 
+ 	"github.com/stretchr/testify/assert"
+ 	"github.com/stretchr/testify/require"
++	"golang.org/x/oauth2"
+ 
+ 	mgm "github.com/netbirdio/netbird/shared/management/client/common"
+ )
+ 
++func TestParseOAuthTokenExpiresInUsesRemainingDuration(t *testing.T) {
++	flow := &PKCEAuthorizationFlow{providerConfig: PKCEAuthProviderConfig{
++		ClientID: "test-client",
++		Audience: "test-audience",
++	}}
++	claims := base64.RawURLEncoding.EncodeToString([]byte(`{"aud":"test-audience"}`))
++	token := &oauth2.Token{
++		AccessToken: "header." + claims + ".signature",
++		Expiry:      time.Now().Add(time.Hour),
++	}
++
++	info, err := flow.parseOAuthToken(token)
++	require.NoError(t, err)
++	require.InDelta(t, 3600, info.ExpiresIn, 1)
++}
++
+ func TestPromptLogin(t *testing.T) {
+ 	const (
+ 		promptLogin = "prompt=login"

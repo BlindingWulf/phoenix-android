@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.22)
+project(phoenix_runtime C)
+add_executable(phoenixjvm phoenix_jvm.c)
+set_target_properties(phoenixjvm PROPERTIES OUTPUT_NAME libphoenixjvm.so)
+target_compile_options(phoenixjvm PRIVATE -Wall -Wextra -Werror)
+target_link_options(phoenixjvm PRIVATE -Wl,--export-dynamic -Wl,-z,max-page-size=16384)
+target_link_libraries(phoenixjvm dl)

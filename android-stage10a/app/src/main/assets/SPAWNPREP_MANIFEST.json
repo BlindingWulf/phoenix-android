@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "minecraftVersion": "26.2",
+  "contract": "docs/PHOENIX_SPAWN_PREP.md in the phoenix-spawnprep mod worktree (owner-approved 2026-10-17, OWNER-20261017B)",
+  "artifact": {
+    "id": "phoenix-spawnprep",
+    "version": "0.1.1",
+    "fileName": "phoenix-spawnprep.jar",
+    "asset": "spawnprep/phoenix-spawnprep.jar",
+    "sha256": "693d1c066c6ffd85adc38872af404f49556da85eecb769ff72df9e71d2f6e324",
+    "sizeBytes": 28057
+  }
+}

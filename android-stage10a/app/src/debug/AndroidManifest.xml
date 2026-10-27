@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <application android:label="Phoenix Stage 10A" tools:replace="android:label" />
+    <instrumentation
+        android:name="dev.phoenix.server.NetBirdAcceptanceInstrumentation"
+        android:targetPackage="${applicationId}"
+        android:handleProfiling="false"
+        android:functionalTest="false" />
+</manifest>

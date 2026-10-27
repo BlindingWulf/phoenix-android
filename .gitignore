@@ -1,0 +1,19 @@
+build/
+.gradle/
+*.log
+local.properties
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+# Large or generated build inputs (rebuild them; see docs/DEVELOPMENT_SETUP.md)
+android-stage10a/app/libs/*.aar
+android-stage10a/runtime/generated/
+android-stage10a/app/src/main/assets/phoenix-metrics.jar
+android-stage10a/.tools/
+android-stage10a/evidence/

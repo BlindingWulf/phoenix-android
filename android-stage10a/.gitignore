@@ -1,0 +1,12 @@
+.gradle/
+**/build/
+.tools/
+local.properties
+evidence/private/
+runtime/artifacts/
+runtime/jniLibs/
+runtime/generated/
+runtime/.probe-build/
+app/src/main/assets/*.jar
+evidence/device/
+*.jks
