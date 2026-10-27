@@ -28,6 +28,11 @@ sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
 export ANDROID_HOME=$HOME/Android/Sdk
 ```
 
+**Windows clones:** `tools/netbird/LICENSES/third-party/...` has deep paths. Clone into a short directory (e.g. `C:\src`) with long paths enabled, or the checkout fails with "Filename too long":
+```powershell
+git -c core.longpaths=true clone https://github.com/BlindingWulf/phoenix-android.git C:\src\phoenix-android
+```
+
 ## 2. Inputs that are not in Git
 
 | File | Needed for | How to get it |
