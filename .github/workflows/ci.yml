@@ -1,0 +1,61 @@
+name: CI
+
+# Fresh-checkout build of the JVM test suites on Linux and Windows. No APK is packaged or signed here.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+        working-directory: android-stage10a
+    steps:
+      - name: Enable long paths (Windows)
+        if: runner.os == 'Windows'
+        working-directory: .
+        run: git config --system core.longpaths true
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-36 build-tools;36.0.0 platform-tools'
+
+      - name: Fetch NetBird AAR build inputs (pinned by SHA-256)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v0.5.0-beta.1 -R "${{ github.repository }}" -p 'netbird-android-v0.80.0-*.aar' -D app/libs
+          grep '\.aar$' tools/netbird/SHA256SUMS | sha256sum -c -
+
+      - name: Core acceptance harnesses
+        run: ./gradlew --no-daemon --console=plain :core:acceptance :core:provisionAcceptance :core:worldAcceptance :core:networkingAcceptance :core:netbirdAcceptance :core:playitAcceptance
+
+      - name: App unit tests
+        run: ./gradlew --no-daemon --console=plain :app:testDebugUnitTest :app:testReleaseUnitTest
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ matrix.os }}
+          path: android-stage10a/app/build/reports/tests/
+          if-no-files-found: ignore
