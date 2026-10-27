@@ -42,7 +42,7 @@ public final class WorldImporterHarness {
                             throw new IOException("server is running");
                         }
                     }, () -> false, ignored -> { });
-            check(result.worldDirectory().equals(target), "import result target");
+            check(Files.isSameFile(result.worldDirectory(), target), "import result target");
             check(result.previousWorldBackup() != null, "replacement reports the prior world backup path");
             check(Files.readString(result.previousWorldBackup().resolve("old-world-marker.txt"))
                     .equals("keep me on failure"), "successful replacement retains the old world marker");

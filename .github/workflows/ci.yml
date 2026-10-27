@@ -50,7 +50,7 @@ jobs:
         run: ./gradlew --no-daemon --console=plain :core:acceptance :core:provisionAcceptance :core:worldAcceptance :core:networkingAcceptance :core:netbirdAcceptance :core:playitAcceptance
 
       - name: App unit tests
-        run: ./gradlew --no-daemon --console=plain :app:testDebugUnitTest :app:testReleaseUnitTest
+        run: ./gradlew --no-daemon --console=plain :app:testDebugUnitTest
 
       - name: Upload test reports
         if: always()

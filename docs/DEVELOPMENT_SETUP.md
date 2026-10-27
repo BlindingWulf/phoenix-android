@@ -68,8 +68,7 @@ cd android-stage10a
 chmod +x gradlew
 ./gradlew :core:acceptance :core:provisionAcceptance :core:worldAcceptance \
           :core:networkingAcceptance :core:netbirdAcceptance :core:playitAcceptance --console=plain
-./gradlew :app:testDebugUnitTest --console=plain          # 342 JVM unit tests
-./gradlew :app:testReleaseUnitTest --console=plain
+./gradlew :app:testDebugUnitTest --console=plain          # 342 JVM unit tests (AGP 9 runs unit tests on the debug type only)
 ./gradlew :app:lintDebug --console=plain                  # Android lint (static analysis)
 ```
 
@@ -78,7 +77,7 @@ Windows:
 cd android-stage10a
 .\gradlew.bat :core:acceptance :core:provisionAcceptance :core:worldAcceptance :core:networkingAcceptance :core:netbirdAcceptance :core:playitAcceptance --console=plain
 .\gradlew.bat :app:testDebugUnitTest --console=plain
-.\gradlew.bat :app:testReleaseUnitTest :app:lintDebug --console=plain
+.\gradlew.bat :app:lintDebug --console=plain
 ```
 
 If Windows Gradle test JVMs fail with `Could not find or load main class Files\...`, your `PATH` contains a stray `"` character. Strip it for that shell only:
